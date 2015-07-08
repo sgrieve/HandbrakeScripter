@@ -1,6 +1,6 @@
 # HandbrakeScripter
 
-Python code to create batch handbrake scripts to split and encode `*.avi` files. Contains 2 methods which should be run in order.
+Python code to create batch scripts to split and encode `*.avi` files using handbrake. Contains 2 methods which should be run in order.
 Requires [Handbrake](http://handbrake.fr/) and Python, it is tested on 2.7.
 
 Some paths within the code may need updated to reflect your system.

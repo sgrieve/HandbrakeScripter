@@ -28,7 +28,7 @@ def output_name_format(name):
     else:
         return name
     
-def make_commands(path,outpath):
+def make_commands(path,outpath,handbrakepath):
     filenames = []
     start = []
     end = []
@@ -44,8 +44,8 @@ def make_commands(path,outpath):
     with open(path+'vid_commands.bat','w') as w:
         w.write('@ECHO OFF\n')
         for i in range(len(end)):
-            w.write('\"C:\Program Files\Handbrake\HandBrakeCLI.exe\" -i \"'+filenames[i]+'\" -t 1 --angle 1 --start-at duration:'+start[i]+' --stop-at duration:'+end[i]+' -o \"'+outnames[i]+'\"  -f mp4  -O  -w 720 -l 480 --crop 0:0:0:0 --modulus 2 -e x264 -q 20 --vfr -a 1 -E av_aac -6 dpl2 -R Auto -B 160 -D 0 --gain 0 --audio-fallback ac3 --encoder-preset=veryfast  --encoder-level=\"4.0\"  --encoder-profile=main\n')
+            w.write('\"'+handbrakepath+'HandBrakeCLI.exe\" -i \"'+filenames[i]+'\" -t 1 --angle 1 --start-at duration:'+start[i]+' --stop-at duration:'+end[i]+' -o \"'+outnames[i]+'\"  -f mp4  -O  -w 720 -l 480 --crop 0:0:0:0 --modulus 2 -e x264 -q 20 --vfr -a 1 -E av_aac -6 dpl2 -R Auto -B 160 -D 0 --gain 0 --audio-fallback ac3 --encoder-preset=veryfast  --encoder-level=\"4.0\"  --encoder-profile=main\n')
     
 #get_file_list('C:\\pd_vids\\to_split\\')        
-make_commands('C:\\pd_vids\\to_split\\','C:\\pd_vids\\to_upload\\')
+make_commands('C:\\pd_vids\\to_split\\','C:\\pd_vids\\to_upload\\','C:\\Program Files\\Handbrake\\')
 

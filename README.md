@@ -14,9 +14,11 @@ the format:
 
 Start and end times must be added manually in the mm:ss format before running the next method.
 
-## make_commands(path,outpath)
+## make_commands(path,outpath,handbrakepath)
 
 This generates a batch file which will contain a Handbrake command to split each video to the specified length and encode
 it to `*.mp4`.
+
+`handbrakepath` is the path to the directory where handbrake is installed.
 
 Run the batch file normally in windows and the video files will be generated in the specified output directory.

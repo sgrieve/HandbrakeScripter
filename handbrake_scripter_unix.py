@@ -22,8 +22,9 @@ def seconds(time):
     return (mins * 60) + seconds
 
 
-def output_name_format(name):
+def out_name_format(name):
     name = name.split('.')[0].title() + '.mp4'
+    name = name.replace('_', ' ')
 
     if ' Sa ' in name:
         return name.replace(' Sa ', ' SA ')
@@ -33,7 +34,7 @@ def output_name_format(name):
         return name
 
 
-def make_commands(path, outpath, handbrakepath):
+def make_commands(path, outpath):
     filenames = []
     start = []
     end = []
@@ -42,14 +43,17 @@ def make_commands(path, outpath, handbrakepath):
         for l in f.readlines():
             split = l.split(',')
             filenames.append(split[0])
-            outnames.append(outpath + output_name_format(split[0].split('\\')[-1]))
+            outnames.append(outpath + out_name_format(split[0].split('/')[-1]))
             start.append(str(seconds(split[1])))
             end.append(str(seconds(split[2]) - seconds(split[1])))
 
-    with open(path + 'vid_commands.bat', 'w') as w:
-        w.write('@ECHO OFF\n')
+    with open(path + 'vid_commands.sh', 'w') as w:
+        w.write('#!/bin/sh\n')
         for i in range(len(end)):
-            w.write('\"'+handbrakepath+'HandBrakeCLI.exe\" -i \"'+filenames[i]+'\" -t 1 --angle 1 --start-at duration:'+start[i]+' --stop-at duration:'+end[i]+' -o \"'+outnames[i]+'\"  -f mp4  -O  -w 720 -l 480 --crop 0:0:0:0 --modulus 2 -e x264 -q 20 --vfr -a 1 -E av_aac -6 dpl2 -R Auto -B 160 -D 0 --gain 0 --audio-fallback ac3 --encoder-preset=veryfast  --encoder-level=\"4.0\"  --encoder-profile=main\n')
+            w.write(('HandBrakeCLI -i \"{0}\" -o \"{3}\" -e x264 -q 22 -r 29.97 -B '
+                     '64 -O --start-at duration:{1} --stop-at duration:{2}\n')
+                    .format(filenames[i], start[i], end[i], outnames[i]))
 
-#get_file_list('C:\\pd_vids\\to_split\\')
-make_commands('C:\\pd_vids\\to_split\\','C:\\pd_vids\\to_upload\\','C:\\Program Files\\Handbrake\\')
+
+#get_file_list('/media/sgrieve/Seagate Backup Plus Drive/new_pd/')
+make_commands('/home/sgrieve/handbrake/vids/', '/home/sgrieve/handbrake/final/')
